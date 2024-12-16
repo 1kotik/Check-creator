@@ -22,14 +22,14 @@ public class CheckComputer {
         return checkInfo;
     }
 
-    public static void writeTime(List<String[]> checkInfo) {
+    private static void writeTime(List<String[]> checkInfo) {
         checkInfo.add(new String[]{"Date", "Time"});
         checkInfo.add(new String[]{new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime()),
                 new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime())});
         checkInfo.add(new String[]{});
     }
 
-    public static void writeProductList(CustomerInfo customerInfo, List<String[]> checkInfo) {
+    private static void writeProductList(CustomerInfo customerInfo, List<String[]> checkInfo) {
         checkInfo.add(new String[]{"QTY", "DESCRIPTION", "PRICE", "DISCOUNT", "TOTAL"});
         for (Product product : customerInfo.getProducts()) {
             int discount;
@@ -48,7 +48,7 @@ public class CheckComputer {
         checkInfo.add(new String[]{});
     }
 
-    public static void writeDiscountCard(CustomerInfo customerInfo, List<String[]> checkInfo) {
+    private static void writeDiscountCard(CustomerInfo customerInfo, List<String[]> checkInfo) {
         if (customerInfo.getDiscountCard().getDiscountAmount() != 0) {
             checkInfo.add(new String[]{"DISCOUNT CARD", "DISCOUNT PERCENTAGE"});
             checkInfo.add(new String[]{customerInfo.getDiscountCard().getCardNumber(),
@@ -57,7 +57,7 @@ public class CheckComputer {
         }
     }
 
-    public static void writeTotal(CustomerInfo customerInfo, List<String[]> checkInfo) throws Exception {
+    private static void writeTotal(CustomerInfo customerInfo, List<String[]> checkInfo) throws Exception {
         if(totalPrice - totalDiscount > customerInfo.getBalanceDebitCard()){
             throw new Exception("NOT ENOUGH MONEY");
         }

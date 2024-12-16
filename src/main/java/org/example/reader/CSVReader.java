@@ -5,7 +5,6 @@ import org.example.dto.Product;
 import org.example.interfaces.Reader;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,27 +14,31 @@ public class CSVReader implements Reader {
     List<String[]> productStock;
     List<String[]> discountCards;
 
-    public CustomerInfo read(String[] path, CustomerInfo customerInfo) throws IOException {
-        productStock = readCSVFile(path[0]);
+    public CustomerInfo read(String[] path, CustomerInfo customerInfo) throws Exception {
+        productStock = readCSVFile(customerInfo.getFileInfo().getSourcePath());
         discountCards = readCSVFile(path[1]);
-        customerInfo = fillProductInfo(customerInfo);
-        customerInfo = fillDiscountCardInfo(customerInfo);
+        fillProductInfo(customerInfo);
+        fillDiscountCardInfo(customerInfo);
         return customerInfo;
     }
 
-    public List<String[]> readCSVFile(String path) throws IOException {
+    private List<String[]> readCSVFile(String path) throws Exception {
         String line;
         List<String[]> destination = new ArrayList<>();
+        try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
             while ((line = reader.readLine()) != null) {
                 String[] lines = line.split(";");
                 destination.add(lines);
             }
             reader.close();
+        }catch (Exception e) {
+            throw new Exception("BAD REQUEST");
+        }
         return destination;
     }
 
-    public CustomerInfo fillProductInfo(CustomerInfo customerInfo) throws IllegalArgumentException {
+    private void fillProductInfo(CustomerInfo customerInfo) throws IllegalArgumentException {
         int quantityInStock;
         String[] line;
         for (Product product : customerInfo.getProducts()) {
@@ -50,21 +53,19 @@ public class CSVReader implements Reader {
             product.setWholesale(line[4].equals("true"));
         }
 
-        return customerInfo;
     }
 
-    public CustomerInfo fillDiscountCardInfo(CustomerInfo customerInfo) {
+    private void fillDiscountCardInfo(CustomerInfo customerInfo) {
         if (!customerInfo.getDiscountCard().getCardNumber().isEmpty()) {
             for (int i = 1; i < discountCards.size(); i++) {
                 if (discountCards.get(i)[1].equals(customerInfo.getDiscountCard().getCardNumber())) {
                     customerInfo.getDiscountCard()
                             .setDiscountAmount(Integer.parseInt(discountCards.get(i)[2]));
-                    return customerInfo;
+                    return;
                 }
             }
             customerInfo.getDiscountCard().setDiscountAmount(2);
         }
-        return customerInfo;
     }
 
 }

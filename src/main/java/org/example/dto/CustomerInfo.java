@@ -7,6 +7,7 @@ public class CustomerInfo {
     List<Product> products;
     DiscountCard discountCard;
     double balanceDebitCard;
+    FileInfo fileInfo;
 
     public void setDiscountCard(DiscountCard discountCard) {
         this.discountCard = discountCard;
@@ -31,4 +32,13 @@ public class CustomerInfo {
     public DiscountCard getDiscountCard() {
         return discountCard;
     }
+
+    public FileInfo getFileInfo() {
+        return fileInfo;
+    }
+
+    public void setFileInfo(FileInfo fileInfo) {
+        this.fileInfo = fileInfo;
+    }
+
 }

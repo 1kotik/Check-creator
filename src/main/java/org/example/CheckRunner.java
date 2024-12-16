@@ -21,17 +21,16 @@ public class CheckRunner {
                                          "./src/main/resources/discountCards.csv" };
 
     public static void main(String[] args) throws IOException {
-        CustomerInfo customerInfo;
+        CustomerInfo customerInfo = new CustomerInfo();
         List <String[]> checkInfo;
         try {
             configure();
             customerInfo = CommandLineReader.readArguments(args);
             customerInfo = reader.read(sourceFiles, customerInfo);
             checkInfo = CheckComputer.computeCheckInfo(customerInfo);
-            writer.write("./src/main/resources/result.csv", checkInfo);
-            CommandLineWriter.write(checkInfo);
+            writer.write(customerInfo.getFileInfo().getDestPath(), checkInfo);
         }catch(Exception e) {
-             writer.write("./src/main/resources/result.csv",
+             writer.write(customerInfo.getFileInfo().getDestPath(),
                      Arrays.asList(new String[] {"ERROR"}, new String[] {e.getMessage()}));
         }
     }

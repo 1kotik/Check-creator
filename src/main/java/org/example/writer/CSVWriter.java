@@ -16,8 +16,14 @@ public class CSVWriter implements Writer {
                 writer.newLine();
             }
             writer.close();
-        }catch (IOException e){
-            System.out.println("DESTINATION FILE ERROR");
+            CommandLineWriter.write(info);
+        }catch (Exception e){
+            System.out.println("BAD REQUEST");
+            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/result.csv"));
+            writer.write("ERROR");
+            writer.newLine();
+            writer.write("BAD REQUEST");
+            writer.close();
         }
     }
 }
