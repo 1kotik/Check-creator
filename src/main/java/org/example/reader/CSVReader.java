@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVReader implements Reader {
+    final static String[] path = {"./src/main/resources/products.csv",
+            "./src/main/resources/discountCards.csv" };
     List<String[]> productStock;
     List<String[]> discountCards;
 
-    public CustomerInfo read(String[] path, CustomerInfo customerInfo) throws Exception {
+    public CustomerInfo read(CustomerInfo customerInfo) throws Exception {
         productStock = readCSVFile(customerInfo.getFileInfo().getSourcePath());
         discountCards = readCSVFile(path[1]);
         fillProductInfo(customerInfo);

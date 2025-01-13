@@ -2,6 +2,7 @@ package org.example.factory;
 
 import org.example.reader.CSVReader;
 import org.example.interfaces.Reader;
+import org.example.reader.DBReader;
 import org.example.utility.FileExtension;
 
 public class ReaderFactory {
@@ -15,6 +16,9 @@ public class ReaderFactory {
             }
             case DOCX -> {
                //to implement
+            }
+            case SQL ->{
+                return new DBReader();
             }
         }
         return null;

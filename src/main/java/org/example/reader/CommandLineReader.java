@@ -1,6 +1,7 @@
 package org.example.reader;
 
 import org.example.dto.CustomerInfo;
+import org.example.dto.DBInfo;
 import org.example.dto.DiscountCard;
 import org.example.dto.FileInfo;
 import org.example.dto.Product;
@@ -57,5 +58,26 @@ public class CommandLineReader {
         }
 
         return filteredProductList;
+    }
+
+    public static DBInfo readDbInfo(String[] args){
+        DBInfo dbInfo = new DBInfo();
+        for (String arg : args) {
+            if (arg.contains("=")) {
+                String[] parts = arg.split("=");
+                String parameter = parts[0];
+                String value = parts[1];
+                if (parameter.equals("datasource.url")) {
+                    dbInfo.setUrl(value);
+                }
+                if (parameter.equals("datasource.username")) {
+                    dbInfo.setUsername(value);
+                }
+                if (parameter.equals("datasource.password")) {
+                    dbInfo.setPassword(value);
+                }
+            }
+        }
+        return dbInfo;
     }
 }
