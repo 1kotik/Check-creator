@@ -1,5 +1,5 @@
 package org.example.utility;
 
 public enum FileExtension {
-    CSV, DOCX, PDF
+    CSV, DOCX, PDF, SQL
 }

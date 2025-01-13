@@ -7,6 +7,7 @@ import org.example.interfaces.Reader;
 import org.example.interfaces.Writer;
 import org.example.reader.CommandLineReader;
 import org.example.utility.CheckComputer;
+import org.example.utility.DBConnector;
 import org.example.utility.FileExtension;
 import org.example.writer.CommandLineWriter;
 
@@ -17,27 +18,27 @@ import java.util.List;
 public class CheckRunner {
     static Reader reader;
     static Writer writer;
-    final static String[] sourceFiles = {"./src/main/resources/products.csv",
-                                         "./src/main/resources/discountCards.csv" };
+
 
     public static void main(String[] args) throws IOException {
-        CustomerInfo customerInfo;
+        CustomerInfo customerInfo = new CustomerInfo();
         List <String[]> checkInfo;
         try {
             configure();
+            DBConnector.setDbInfo(CommandLineReader.readDbInfo(args));
             customerInfo = CommandLineReader.readArguments(args);
-            customerInfo = reader.read(sourceFiles, customerInfo);
+            customerInfo = reader.read(customerInfo);
             checkInfo = CheckComputer.computeCheckInfo(customerInfo);
-            writer.write("./src/main/resources/result.csv", checkInfo);
-            CommandLineWriter.write(checkInfo);
+            writer.write(customerInfo.getFileInfo().getDestPath(), checkInfo);
         }catch(Exception e) {
-             writer.write("./src/main/resources/result.csv",
+             writer.write(customerInfo.getFileInfo().getDestPath(),
                      Arrays.asList(new String[] {"ERROR"}, new String[] {e.getMessage()}));
         }
     }
 
     static void configure() {
-        reader = ReaderFactory.createReader(FileExtension.CSV);
+        reader = ReaderFactory.createReader(FileExtension.SQL);
         writer = WriterFactory.createWriter(FileExtension.CSV);
+
     }
 }

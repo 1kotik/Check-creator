@@ -7,6 +7,10 @@ public class Product {
     String name;
     boolean wholesale;
 
+    public Product() {
+
+    }
+
     public Product(int id, int quantity) {
         this.id = id;
         this.quantity = quantity;
